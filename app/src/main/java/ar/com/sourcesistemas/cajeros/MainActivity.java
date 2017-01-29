@@ -37,7 +37,12 @@ public class MainActivity extends AppCompatActivity
 
         accessTokenTracker= new AccessTokenTracker() {
             @Override
-            protected void onCurrentAccessTokenChanged(AccessToken oldToken, AccessToken newToken) {
+            protected void onCurrentAccessTokenChanged(AccessToken oldToken, AccessToken newToken)
+            {
+                //User logged out
+                if (newToken == null){
+                    displayMessage("You've logged out");
+                }
 
             }
         };
@@ -45,7 +50,7 @@ public class MainActivity extends AppCompatActivity
         profileTracker = new ProfileTracker() {
             @Override
             protected void onCurrentProfileChanged(Profile oldProfile, Profile newProfile) {
-                displayMessage(newProfile);
+                displayName(newProfile);
             }
         };
 
@@ -60,11 +65,13 @@ public class MainActivity extends AppCompatActivity
         public void onSuccess(LoginResult loginResult) {
             AccessToken accessToken = loginResult.getAccessToken();
             Profile profile = Profile.getCurrentProfile();
-            displayMessage(profile);
+            displayName(profile);
         }
 
         @Override
         public void onCancel() {
+            Profile profile = Profile.getCurrentProfile();
+            displayMessage("Not Logged");
 
         }
 
@@ -74,6 +81,8 @@ public class MainActivity extends AppCompatActivity
         }
     };
 
+
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data)
     {
@@ -82,11 +91,17 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    private void displayMessage(Profile profile)
+    private void displayName(Profile profile)
     {
         if(profile != null){
             textview.setText(profile.getName());
         }
+    }
+
+    //No se como hacer overload
+    private void displayMessage(String message)
+    {
+        textview.setText(message);
     }
 
     @Override
@@ -95,6 +110,7 @@ public class MainActivity extends AppCompatActivity
         super.onStop();
         accessTokenTracker.stopTracking();
         profileTracker.stopTracking();
+
     }
 
     @Override
@@ -102,7 +118,7 @@ public class MainActivity extends AppCompatActivity
     {
         super.onResume();
         Profile profile = Profile.getCurrentProfile();
-        displayMessage(profile);
+        displayName(profile);
     }
 
 
