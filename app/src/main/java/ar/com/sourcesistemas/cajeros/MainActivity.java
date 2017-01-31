@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -18,6 +20,7 @@ import com.facebook.FacebookException;
 import com.facebook.Profile;
 import com.facebook.ProfileTracker;
 import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 
 import java.util.List;
 
@@ -51,52 +54,56 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
 
-        facebook_profile = (TextView)findViewById(R.id.facebook_name);
+        databaseHandler = new DatabaseHandler(this, null, null, 1);
+
+        Button save_button = (Button) findViewById(R.id.save);
+        Button load_button = (Button) findViewById(R.id.load);
+
+        name = (EditText) findViewById(R.id.name);
+        last_name = (EditText) findViewById(R.id.last_name);
+        facebook_profile = (TextView) findViewById(R.id.facebook_name);
 
 
-
-        accessTokenTracker.startTracking();
-        profileTracker.startTracking();
-        databaseHandler = new DatabaseHandler(this,null,null,1);
-
-        Button save_button = (Button)findViewById(R.id.save);
-        Button load_button = (Button)findViewById(R.id.load);
-
-        name =(EditText) findViewById(R.id.name);
-        last_name =(EditText)  findViewById(R.id.last_name);
-
-        save_button.setOnClickListener(new View.OnClickListener() {
+        //BD
+        save_button.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
 
-                User user = new User(name.getText().toString(),last_name.getText().toString(),facebook_profile.getText().toString());
+                User user = new User(name.getText().toString(), last_name.getText().toString(), facebook_profile.getText().toString());
 
                 databaseHandler.insertUser(user);
 
             }
         });
 
-        load_button.setOnClickListener(new View.OnClickListener() {
+        load_button.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
-                List<User> users =  databaseHandler.getUsers();
+            public void onClick(View v)
+            {
+                List<User> users = databaseHandler.getUsers();
                 User user = users.get(0);
                 name.setText(user.getName());
                 last_name.setText(user.getLast_name());
 
-
+                //Te deslogueas y pedis el load para ver el facebook
+                facebook_profile.setText(user.getFacebook());
             }
 
 
         });
 
+        //Facebok magic
         callbackManager = CallbackManager.Factory.create();
 
+        /* La bardie NO inicializando estas variables antes de meter los tracking */
         accessTokenTracker= new AccessTokenTracker() {
             @Override
             protected void onCurrentAccessTokenChanged(AccessToken oldToken, AccessToken newToken)
             {
-                //User logged out
+                //Log out
                 if (newToken == null){
                     displayMessage("You've logged out");
                 }
@@ -104,27 +111,54 @@ public class MainActivity extends AppCompatActivity
             }
         };
 
+
         profileTracker = new ProfileTracker() {
             @Override
+            //User Log in on new account. Creo que también aplica cuando se loguea por primera vez
             protected void onCurrentProfileChanged(Profile oldProfile, Profile newProfile) {
-                displayName(newProfile);
+                displayMessage(newProfile);
             }
         };
 
+
+        accessTokenTracker.startTracking();
+        profileTracker.startTracking();
     }
 
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.activity_main, container, false);
+    }
+
+    public void onViewCreated(View view, Bundle savedInstanceState)
+    {
+        onViewCreated(view, savedInstanceState);
+        LoginButton loginButton = (LoginButton) view.findViewById(R.id.login_button);
+        loginButton.setReadPermissions("user_friends");
+        loginButton.registerCallback(callbackManager, callback);
+    }
+
+    //Ni idea que hace
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+
+    }
+
+
+    //Al hacer click en el boton
     public FacebookCallback<LoginResult> callback = new FacebookCallback<LoginResult>()
     {
         @Override
         public void onSuccess(LoginResult loginResult) {
             AccessToken accessToken = loginResult.getAccessToken();
             Profile profile = Profile.getCurrentProfile();
-            displayName(profile);
+            displayMessage(profile);
         }
 
         @Override
         public void onCancel() {
-            Profile profile = Profile.getCurrentProfile();
             displayMessage("Not Logged");
 
         }
@@ -135,24 +169,14 @@ public class MainActivity extends AppCompatActivity
         }
     };
 
-
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
-        super.onActivityResult(requestCode, resultCode, data);
-        callbackManager.onActivityResult(requestCode, resultCode, data);
-
-    }
-
-    private void displayName(Profile profile)
+    private void displayMessage(Profile profile)
     {
         if(profile != null){
             facebook_profile.setText(profile.getName());
         }
     }
 
-    //No se como hacer overload
+
     private void displayMessage(String message)
     {
         facebook_profile.setText(message);
@@ -172,7 +196,7 @@ public class MainActivity extends AppCompatActivity
     {
         super.onResume();
         Profile profile = Profile.getCurrentProfile();
-        displayName(profile);
+        displayMessage(profile);
     }
 
 

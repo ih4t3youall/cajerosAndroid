@@ -27,7 +27,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private SQLiteDatabase db;
 
 
-    public DatabaseHandler(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
+    public DatabaseHandler(Context context, String name, SQLiteDatabase.CursorFactory factory, int version)
+    {
         super(context, DATABASE_NAME, factory, 5);
 
 
@@ -42,7 +43,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-        String CREATE_USER_TABLE=" CREATE TABLE  `user` ( `iduser` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,   `name` VARCHAR(45) NULL, `last_name` VARCHAR(45) NULL," +
+        String CREATE_USER_TABLE=" CREATE TABLE  `user` ( `iduser` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,   " +
+                "`name` VARCHAR(45) NULL, " +
+                "`last_name` VARCHAR(45) NULL," +
                 "`facebook` VARCHAR(255) NULL)";
         String CREATE_ATM_TABLE=" CREATE TABLE  `ATM` (`idATM` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE," +
                 "`address` VARCHAR(45) NULL," +
@@ -52,9 +55,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 "`bank_name` VARCHAR(45) NULL," +
                 "`added_by` long(5)," +
                 "FOREIGN KEY(added_by) REFERENCES user(iduser));";
-        String CREATE_COMMENT_TABLE = "CREATE TABLE `comment` (`idcomment`INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,`text` VARCHAR(1500) NULL," +
-                "`raiting` VARCHAR(45) NULL,`user_iduser` INT NOT NULL,`ATM_idATM` INT NOT NULL,`comment_raiting` INT(5) NULL, FOREIGN KEY(user_iduser) REFERENCES user(iduser)," +
-                "  FOREIGN KEY(ATM_idATM) REFERENCES ATM(idATM));";
+        String CREATE_COMMENT_TABLE = "CREATE TABLE `comment` (`idcomment`INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE," +
+                "`text` VARCHAR(1500) NULL," +
+                "`raiting` VARCHAR(45) NULL," +
+                "`user_iduser` INT NOT NULL," +
+                "`ATM_idATM` INT NOT NULL," +
+                "`comment_raiting` INT(5) NULL, " +
+                "FOREIGN KEY(user_iduser) REFERENCES user(iduser)," +
+                "FOREIGN KEY(ATM_idATM) REFERENCES ATM(idATM));";
 
         db.execSQL(CREATE_ATM_TABLE);
         db.execSQL(CREATE_USER_TABLE);
@@ -70,39 +78,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
 
-    public List<ATM> getATM(){
-
-        String query = "select * from "+TABLE_ATM+";";
-        Cursor cursor = db.rawQuery(query, null);
-
-        List<ATM> atms = new LinkedList<ATM>();
-        while (cursor.moveToNext()){
-
-          atms.add(new ATM(cursor.getLong(0),cursor.getString(1), cursor.getString(2),cursor.getString(3),cursor.getString(4),cursor.getString(5),new User(cursor.getLong(6))));
-
-        }
-
-
-        return atms;
-
-
-
-    }
-
-
-    public long insertUser(User user){
-
-        ContentValues contentValues  = new ContentValues();
-
-        //contentValues.put("iduser",user.getId());
-        contentValues.put("NAME",user.getName());
-        contentValues.put("last_name",user.getLast_name());
-
-        long id = db.insert(TABLE_USER, null, contentValues);
-        return id;
-
-
-    }
 
     public List<User>  getUsers(){
 
@@ -112,7 +87,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         List<User> users = new LinkedList<User>();
         while (cursor.moveToNext()){
 
-            users.add(new User(cursor.getLong(0),cursor.getString(1),cursor.getString(2), cursor.getString(4)));
+            users.add(new User(cursor.getLong(0),cursor.getString(1),cursor.getString(2), cursor.getString(3)));
 
         }
 
@@ -121,7 +96,39 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 
     }
+    public long insertUser(User user){
 
+        ContentValues contentValues  = new ContentValues();
+
+        //contentValues.put("iduser",user.getId());
+        contentValues.put("name",user.getName());
+        contentValues.put("last_name",user.getLast_name());
+
+        //se tiene que loguear obligatoriamente con el puto facebook para registrarse j3j3j
+        contentValues.put("facebook", user.getFacebook());
+
+        long id = db.insert(TABLE_USER, null, contentValues);
+        return id;
+
+
+    }
+
+
+    public List<ATM> getATM(){
+
+        String query = "select * from "+TABLE_ATM+";";
+        Cursor cursor = db.rawQuery(query, null);
+
+        List<ATM> atms = new LinkedList<ATM>();
+        while (cursor.moveToNext()){
+
+            atms.add(new ATM(cursor.getLong(0),cursor.getString(1), cursor.getString(2),cursor.getString(3),cursor.getString(4),cursor.getString(5),new User(cursor.getLong(6))));
+
+        }
+
+        return atms;
+
+    }
 
     public long insertATM(ATM atm){
 
