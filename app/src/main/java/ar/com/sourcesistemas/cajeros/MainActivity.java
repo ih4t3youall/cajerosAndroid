@@ -4,6 +4,10 @@ package ar.com.sourcesistemas.cajeros;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.facebook.AccessToken;
@@ -15,15 +19,30 @@ import com.facebook.Profile;
 import com.facebook.ProfileTracker;
 import com.facebook.login.LoginResult;
 
+import java.util.List;
+
+import ar.com.sourcesistemas.database.DatabaseHandler;
+import ar.com.sourcesistemas.entities.User;
+
+
 
 public class MainActivity extends AppCompatActivity
 {
 
+    //Facebook
     private CallbackManager callbackManager;
-    public TextView textview ;
+    public TextView facebook_profile ;
 
     private AccessTokenTracker accessTokenTracker;
     private ProfileTracker profileTracker;
+
+
+
+    //Database connection
+    private DatabaseHandler databaseHandler;
+
+    private EditText name;
+    private EditText last_name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -31,7 +50,45 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        textview = (TextView)findViewById(R.id.textView);
+
+        facebook_profile = (TextView)findViewById(R.id.facebook_name);
+
+
+
+        accessTokenTracker.startTracking();
+        profileTracker.startTracking();
+        databaseHandler = new DatabaseHandler(this,null,null,1);
+
+        Button save_button = (Button)findViewById(R.id.save);
+        Button load_button = (Button)findViewById(R.id.load);
+
+        name =(EditText) findViewById(R.id.name);
+        last_name =(EditText)  findViewById(R.id.last_name);
+
+        save_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                User user = new User(name.getText().toString(),last_name.getText().toString(),facebook_profile.getText().toString());
+
+                databaseHandler.insertUser(user);
+
+            }
+        });
+
+        load_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                List<User> users =  databaseHandler.getUsers();
+                User user = users.get(0);
+                name.setText(user.getName());
+                last_name.setText(user.getLast_name());
+
+
+            }
+
+
+        });
 
         callbackManager = CallbackManager.Factory.create();
 
@@ -53,9 +110,6 @@ public class MainActivity extends AppCompatActivity
                 displayName(newProfile);
             }
         };
-
-        accessTokenTracker.startTracking();
-        profileTracker.startTracking();
 
     }
 
@@ -94,14 +148,14 @@ public class MainActivity extends AppCompatActivity
     private void displayName(Profile profile)
     {
         if(profile != null){
-            textview.setText(profile.getName());
+            facebook_profile.setText(profile.getName());
         }
     }
 
     //No se como hacer overload
     private void displayMessage(String message)
     {
-        textview.setText(message);
+        facebook_profile.setText(message);
     }
 
     @Override

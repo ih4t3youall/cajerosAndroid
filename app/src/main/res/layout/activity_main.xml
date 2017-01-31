@@ -11,27 +11,72 @@
     tools:context="ar.com.sourcesistemas.cajeros.MainActivity">
 
 
+    <TextView
+        android:id="@+id/facebook_name"
+        android:text="Perfil Fabook"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="108dp" />
+
     <com.facebook.login.widget.LoginButton
         android:id="@+id/login_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="148dp"
-        android:layout_marginLeft="73dp"
-        android:layout_marginStart="73dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="59dp"
+        android:layout_marginStart="59dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
-    <TextView
-        android:layout_width="fill_parent"
+    <Button
+        android:text="load"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/textView"
-        android:layout_marginTop="78dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:id="@+id/load"
+        android:layout_marginRight="19dp"
+        android:layout_marginEnd="19dp"
+        android:layout_marginBottom="117dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/last_name"
+        android:layout_alignEnd="@+id/last_name" />
+
+    <Button
+        android:text="save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/save"
+        android:layout_above="@+id/load"
+        android:layout_alignLeft="@+id/load"
+        android:layout_alignStart="@+id/load" />
+
+    <EditText
+        android:id="@+id/last_name"
+        android:text="last_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:layout_above="@+id/save"
+        android:layout_alignLeft="@+id/login_button"
+        android:layout_alignStart="@+id/login_button" />
+
+    <EditText
+        android:id="@+id/name"
+        android:text="name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:layout_above="@+id/last_name"
+        android:layout_alignLeft="@+id/last_name"
+        android:layout_alignStart="@+id/last_name"
+        android:layout_marginLeft="32dp"
+        android:layout_marginStart="32dp" />
 
 
 </RelativeLayout>
