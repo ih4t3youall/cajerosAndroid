@@ -32,6 +32,7 @@ import ar.com.sourcesistemas.entities.User;
 public class MainActivity extends AppCompatActivity
 {
 
+    //region "variables"
     //Facebook
     private CallbackManager callbackManager;
     public TextView facebook_profile ;
@@ -47,13 +48,15 @@ public class MainActivity extends AppCompatActivity
     private EditText name;
     private EditText last_name;
 
+    //endregion
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
+        //region initialize
         databaseHandler = new DatabaseHandler(this, null, null, 1);
 
         Button save_button = (Button) findViewById(R.id.save);
@@ -63,8 +66,9 @@ public class MainActivity extends AppCompatActivity
         last_name = (EditText) findViewById(R.id.last_name);
         facebook_profile = (TextView) findViewById(R.id.facebook_name);
 
+        //endregion
 
-        //BD
+        //region "BD"
         save_button.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -95,10 +99,12 @@ public class MainActivity extends AppCompatActivity
 
         });
 
-        //Facebok magic
+        //endregion
+
+        //region "Facebook"
+
         callbackManager = CallbackManager.Factory.create();
 
-        /* La bardie NO inicializando estas variables antes de meter los tracking */
         accessTokenTracker= new AccessTokenTracker() {
             @Override
             protected void onCurrentAccessTokenChanged(AccessToken oldToken, AccessToken newToken)
@@ -123,6 +129,7 @@ public class MainActivity extends AppCompatActivity
 
         accessTokenTracker.startTracking();
         profileTracker.startTracking();
+        //endregion
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -176,11 +183,13 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-
     private void displayMessage(String message)
     {
         facebook_profile.setText(message);
     }
+
+
+
 
     @Override
     public void onStop()
