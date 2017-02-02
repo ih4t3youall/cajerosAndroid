@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.content_main);
 
         //region initialize
         databaseHandler = new DatabaseHandler(this, null, null, 1);
@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity
         });
 
         //endregion
- 
+
         //region "Facebook"
 
         callbackManager = CallbackManager.Factory.create();
@@ -133,7 +133,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.activity_main, container, false);
+        return inflater.inflate(R.layout.content_main, container, false);
     }
 
     public void onViewCreated(View view, Bundle savedInstanceState)
