@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity
         });
 
         //endregion
-
+ 
         //region "Facebook"
 
         callbackManager = CallbackManager.Factory.create();
