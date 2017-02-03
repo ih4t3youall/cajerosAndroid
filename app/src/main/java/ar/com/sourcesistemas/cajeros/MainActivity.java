@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onClick(View v)
             {
 
-                User user = new User(name.getText().toString(), last_name.getText().toString(), facebook_profile.getText().toString());
+                User user = new User(name.getText().toString(), last_name.getText().toString());
 
                 databaseHandler.insertUser(user);
 
@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 last_name.setText(user.getLast_name());
 
                 //Te deslogueas y pedis el load para ver el facebook
-                facebook_profile.setText(user.getFacebook());
+//                facebook_profile.setText(user.getFacebook());
             }
 
 

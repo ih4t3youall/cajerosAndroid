@@ -45,8 +45,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         String CREATE_USER_TABLE=" CREATE TABLE  `user` ( `iduser` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,   " +
                 "`name` VARCHAR(45) NULL, " +
-                "`last_name` VARCHAR(45) NULL," +
-                "`facebook` VARCHAR(255) NULL)";
+                "`last_name` VARCHAR(45) NULL,";
         String CREATE_ATM_TABLE=" CREATE TABLE  `ATM` (`idATM` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE," +
                 "`address` VARCHAR(45) NULL," +
                 "`lat` VARCHAR(100) NULL," +
@@ -87,7 +86,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         List<User> users = new LinkedList<User>();
         while (cursor.moveToNext()){
 
-            users.add(new User(cursor.getLong(0),cursor.getString(1),cursor.getString(2), cursor.getString(3)));
+            users.add(new User(cursor.getLong(0),cursor.getString(1),cursor.getString(2)));
 
         }
 
@@ -103,9 +102,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         //contentValues.put("iduser",user.getId());
         contentValues.put("name",user.getName());
         contentValues.put("last_name",user.getLast_name());
-
-        //se tiene que loguear obligatoriamente con el puto facebook para registrarse j3j3j
-        contentValues.put("facebook", user.getFacebook());
 
         long id = db.insert(TABLE_USER, null, contentValues);
         return id;

@@ -10,24 +10,24 @@ public class User {
     private long id;
     private String name;
     private String last_name;
-    private String facebook;
+
 
     public User(long id){
         this.id = id;
     }
 
 
-    public User( String name, String last_name, String facebook) {
+    public User( String name, String last_name) {
         this.name = name;
         this.last_name = last_name;
-        this.facebook = facebook;
+
     }
 
-    public User(long id, String name, String last_name, String facebook) {
+    public User(long id, String name, String last_name) {
         this.id = id;
         this.name = name;
         this.last_name = last_name;
-        this.facebook = facebook;
+
     }
 
     public long getId() {
@@ -54,11 +54,4 @@ public class User {
         this.last_name = last_name;
     }
 
-    public String getFacebook() {
-        return facebook;
-    }
-
-    public void setFacebook(String facebook) {
-        this.facebook = facebook;
-    }
 }
