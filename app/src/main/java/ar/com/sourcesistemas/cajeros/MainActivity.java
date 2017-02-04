@@ -69,6 +69,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private TextView last_name;
 
 
+    //NavViewer
+    NavigationView navViewContext;
+
     //endregion
 
     @Override
@@ -198,16 +201,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        navViewContext = (NavigationView) findViewById(R.id.nav_view);
+        navViewContext.setNavigationItemSelectedListener(this);
+
+
 
 
         //endregion
     }
 
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.activity_main, container, false);
-    }
 
     public void onViewCreated(View view, Bundle savedInstanceState)
     {
@@ -217,25 +219,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         loginButton.registerCallback(callbackManager, callback);
     }
 
-    //Ni idea que hace
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
-        super.onActivityResult(requestCode, resultCode, data);
-        callbackManager.onActivityResult(requestCode, resultCode, data);
 
-    }
-
-
-    //Al hacer click en el boton
     public FacebookCallback<LoginResult> callback = new FacebookCallback<LoginResult>()
     {
         @Override
+        //ATENCION : ESTA PORONGA NO CACHEA CUANDO TE LOGUEAS! Ver Activity Result :)
         public void onSuccess(LoginResult loginResult) {
             AccessToken accessToken = loginResult.getAccessToken();
-            Profile profile = Profile.getCurrentProfile();
-            showProfile(profile);
-
             Log.i(TAG_FACEBOOK, "Conexión con facebook exitosa");
         }
 
@@ -250,6 +240,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Log.i(TAG_FACEBOOK, "Error en la conexión de facebook");
         }
     };
+
+    @Override
+    //Este cacheo si se puede ver
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+
+        Profile profile = Profile.getCurrentProfile();
+        if (profile != null)
+        {
+            DrawerLogin draw = new DrawerLogin(navViewContext);
+            draw.setDrawer(profile);
+        }
+
+    }
 
     private void showProfile(Profile profile)
     {
@@ -339,19 +345,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     //endregion
 
 
-
     @Override
     public void onStop()
     {
         super.onStop();
         accessTokenTracker.stopTracking();
         profileTracker.stopTracking();
-
+        
     }
 
     @Override
     public void onResume()
     {
+
         super.onResume();
     }
 

@@ -11,6 +11,32 @@
     tools:context="ar.com.sourcesistemas.cajeros.MainActivity">
 
 
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:hint="Enter Name"
+        android:ems="10"
+        android:id="@+id/username"
+        android:layout_below="@+id/facebook_name"
+        android:layout_alignLeft="@+id/login_button"
+        android:layout_alignStart="@+id/login_button"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/edittext_border_style"/>
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Enter Password"
+        android:inputType="textPassword"
+        android:ems="10"
+        android:id="@+id/password"
+        android:layout_below="@+id/username"
+        android:layout_alignLeft="@+id/username"
+        android:layout_alignStart="@+id/username"
+        android:layout_marginTop="13dp"
+        android:background="@drawable/edittext_border_style"/>
+
     <TextView
         android:id="@+id/facebook_name"
         android:text="Perfil Facebook"
@@ -48,7 +74,6 @@
         android:text="name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="textPersonName"
         android:ems="10"
         android:layout_below="@+id/save"
         android:layout_alignParentLeft="true"
@@ -66,39 +91,12 @@
         android:id="@+id/last_name"
         android:text="last_name"
         android:layout_height="wrap_content"
-        android:inputType="textPersonName"
         android:ems="10"
         android:layout_width="wrap_content"
         android:layout_alignBaseline="@+id/save"
         android:layout_alignBottom="@+id/save"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"/>
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:hint="Enter Name"
-        android:ems="10"
-        android:id="@+id/editText"
-        android:layout_below="@+id/facebook_name"
-        android:layout_alignLeft="@+id/login_button"
-        android:layout_alignStart="@+id/login_button"
-        android:layout_marginTop="32dp"
-        android:background="@drawable/edittext_border_style"/>
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="Enter Password"
-        android:inputType="textPassword"
-        android:ems="10"
-        android:id="@+id/editText2"
-        android:layout_below="@+id/editText"
-        android:layout_alignLeft="@+id/editText"
-        android:layout_alignStart="@+id/editText"
-        android:layout_marginTop="13dp"
-        android:background="@drawable/edittext_border_style"/>
 
     <com.facebook.login.widget.LoginButton
         android:id="@+id/login_button"
@@ -108,7 +106,7 @@
         android:layout_marginLeft="62dp"
         android:layout_marginStart="62dp"
         android:elevation="0dp"
-        android:layout_below="@+id/editText2"
+        android:layout_below="@+id/password"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginTop="80dp"/>
