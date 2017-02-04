@@ -8,7 +8,6 @@ import android.widget.TextView;
 import com.facebook.Profile;
 import com.facebook.login.widget.ProfilePictureView;
 
-import static android.os.Build.VERSION_CODES.N;
 
 /**
  * Created by CapitanEmpanada on 04/02/2017.
@@ -25,8 +24,16 @@ public class DrawerLogin extends MainActivity
 
     public void setDrawer(Profile profile)
     {
-        setProfileName(profile.getCurrentProfile().getName(), headerView);
-        setProfilePicture(profile.getId(), headerView);
+        if(profile != null)
+        {
+            setProfileName(profile.getCurrentProfile().getName(), headerView);
+            setProfilePicture(profile.getId(), headerView);
+        }else
+        {
+            setProfileName("Not Logged", headerView);
+            setProfilePicture("", headerView);
+        }
+
     }
 
     private void setProfileName(String name, View view)

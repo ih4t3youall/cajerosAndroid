@@ -150,36 +150,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         //endregion
 
-        //region "Facebook"
-
-        callbackManager = CallbackManager.Factory.create();
-
-        accessTokenTracker= new AccessTokenTracker() {
-            @Override
-            protected void onCurrentAccessTokenChanged(AccessToken oldToken, AccessToken newToken)
-            {
-                //Log out
-                if (newToken == null){
-                    displayMessage("You've logged out");
-                }
-
-            }
-        };
-
-
-        profileTracker = new ProfileTracker() {
-            @Override
-            //User Log in on new account. Creo que también aplica cuando se loguea por primera vez
-            protected void onCurrentProfileChanged(Profile oldProfile, Profile newProfile) {
-//                displayMessage(newProfile);
-            }
-        };
-
-
-        accessTokenTracker.startTracking();
-        profileTracker.startTracking();
-        //endregion
-
         //region "NavigationDrawer"
 
         //region "message"
@@ -205,9 +175,50 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navViewContext.setNavigationItemSelectedListener(this);
 
 
-
-
         //endregion
+
+        //region "Facebook"
+
+        callbackManager = CallbackManager.Factory.create();
+
+        accessTokenTracker= new AccessTokenTracker() {
+            @Override
+            protected void onCurrentAccessTokenChanged(AccessToken oldToken, AccessToken newToken)
+            {
+                //Log out
+                if (newToken == null)
+                {
+                    displayMessage("You've logged out");
+                    DrawerLogin draw = new DrawerLogin(navViewContext);
+                    Profile profile = Profile.getCurrentProfile();
+                    draw.setDrawer(profile);
+                }
+
+            }
+        };
+
+
+        profileTracker = new ProfileTracker() {
+            @Override
+            //User Log in on new account. Creo que también aplica cuando se loguea por primera vez
+            protected void onCurrentProfileChanged(Profile oldProfile, Profile newProfile)
+            {
+//                displayMessage(newProfile);
+            }
+        };
+
+
+
+        accessTokenTracker.startTracking();
+        profileTracker.startTracking();
+
+        //If it's logged, track it
+        DrawerLogin draw = new DrawerLogin(navViewContext);
+        Profile profile = Profile.getCurrentProfile();
+        draw.setDrawer(profile);
+        //endregion
+
+
     }
 
 
@@ -257,13 +268,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
-    private void showProfile(Profile profile)
-    {
-        String firstName = profile.getFirstName() + " " + profile.getMiddleName();
-        String lastName = profile.getLastName();
-
-        name.setText(firstName);
-        last_name.setText(lastName);
+    public boolean isLoggedIn() {
+        AccessToken accessToken = AccessToken.getCurrentAccessToken();
+        return accessToken != null;
     }
 
     private void displayMessage(Profile profile)
@@ -351,7 +358,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onStop();
         accessTokenTracker.stopTracking();
         profileTracker.stopTracking();
-        
+
     }
 
     @Override
