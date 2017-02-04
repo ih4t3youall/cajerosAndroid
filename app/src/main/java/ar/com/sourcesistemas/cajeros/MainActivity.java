@@ -49,8 +49,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     //region "variables"
 
-    private static final String TAG = MainActivity.class.getSimpleName();
+    final public String TAG = MainActivity.class.getSimpleName();
     final public String TAG_DATABASE = "Database SQL";
+    final public String TAG_FACEBOOK = "Facebook api";
 
     //Facebook
     private CallbackManager callbackManager;
@@ -234,6 +235,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             AccessToken accessToken = loginResult.getAccessToken();
             Profile profile = Profile.getCurrentProfile();
             showProfile(profile);
+
+            Log.i(TAG_FACEBOOK, "Conexión con facebook exitosa");
         }
 
         @Override
@@ -244,7 +247,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         @Override
         public void onError(FacebookException e) {
-
+            Log.i(TAG_FACEBOOK, "Error en la conexión de facebook");
         }
     };
 
@@ -253,8 +256,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         String firstName = profile.getFirstName() + " " + profile.getMiddleName();
         String lastName = profile.getLastName();
 
-        Log.i("Facebook", firstName);
-        Log.i("Facebook", lastName);
         name.setText(firstName);
         last_name.setText(lastName);
     }

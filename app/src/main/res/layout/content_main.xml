@@ -12,24 +12,26 @@
 
 
     <TextView
-        android:id="@+id/name"
-        android:text="name"
-        android:layout_width="wrap_content"
+        android:id="@+id/facebook_name"
+        android:text="Perfil Facebook"
         android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:layout_above="@+id/last_name"
-        android:layout_alignLeft="@+id/last_name"
-        android:layout_alignStart="@+id/last_name"/>
+        android:layout_width="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignRight="@+id/login_button"
+        android:layout_alignEnd="@+id/login_button"
+        android:layout_marginRight="27dp"
+        android:layout_marginEnd="27dp"
+        android:layout_marginTop="37dp"/>
 
     <Button
-        android:text="save"
+        android:text="Clear fields"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/save"
-        android:layout_above="@+id/load"
-        android:layout_alignLeft="@+id/load"
-        android:layout_alignStart="@+id/load"/>
+        android:id="@+id/clear_fields"
+        android:layout_alignBaseline="@+id/load"
+        android:layout_alignBottom="@+id/load"
+        android:layout_toRightOf="@+id/login_button"
+        android:layout_toEndOf="@+id/login_button"/>
 
     <Button
         android:text="load"
@@ -38,53 +40,78 @@
         android:id="@+id/load"
         android:layout_marginBottom="11dp"
         android:layout_alignParentBottom="true"
-        android:layout_alignRight="@+id/last_name"
-        android:layout_alignEnd="@+id/last_name"/>
+        android:layout_alignLeft="@+id/save"
+        android:layout_alignStart="@+id/save"/>
 
     <TextView
-        android:id="@+id/last_name"
-        android:text="last_name"
+        android:id="@+id/name"
+        android:text="name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
         android:ems="10"
-        android:layout_marginBottom="58dp"
-        android:layout_above="@+id/save"
-        android:layout_alignRight="@+id/login_button"
-        android:layout_alignEnd="@+id/login_button"/>
+        android:layout_below="@+id/save"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
+
+    <Button
+        android:text="save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/save"
+        android:layout_above="@+id/load"
+        android:layout_centerHorizontal="true"/>
 
     <TextView
-        android:id="@+id/facebook_name"
-        android:text="Perfil Facebook"
+        android:id="@+id/last_name"
+        android:text="last_name"
         android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
         android:layout_width="wrap_content"
-        android:layout_below="@+id/login_button"
-        android:layout_alignRight="@+id/login_button"
-        android:layout_alignEnd="@+id/login_button"
-        android:layout_marginRight="39dp"
-        android:layout_marginEnd="39dp"
-        android:layout_marginTop="18dp"/>
+        android:layout_alignBaseline="@+id/save"
+        android:layout_alignBottom="@+id/save"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:hint="Enter Name"
+        android:ems="10"
+        android:id="@+id/editText"
+        android:layout_below="@+id/facebook_name"
+        android:layout_alignLeft="@+id/login_button"
+        android:layout_alignStart="@+id/login_button"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/edittext_border_style"/>
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Enter Password"
+        android:inputType="textPassword"
+        android:ems="10"
+        android:id="@+id/editText2"
+        android:layout_below="@+id/editText"
+        android:layout_alignLeft="@+id/editText"
+        android:layout_alignStart="@+id/editText"
+        android:layout_marginTop="13dp"
+        android:background="@drawable/edittext_border_style"/>
 
     <com.facebook.login.widget.LoginButton
         android:id="@+id/login_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="70dp"
-        android:layout_marginLeft="60dp"
-        android:layout_marginStart="60dp"
-        android:layout_alignParentTop="true"
+        android:layout_marginLeft="62dp"
+        android:layout_marginStart="62dp"
+        android:elevation="0dp"
+        android:layout_below="@+id/editText2"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/>
-
-    <Button
-        android:text="Clear fields"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/name"
-        android:layout_toRightOf="@+id/name"
-        android:layout_toEndOf="@+id/name"
-        android:id="@+id/clear_fields"/>
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="80dp"/>
 
 
 </RelativeLayout>
