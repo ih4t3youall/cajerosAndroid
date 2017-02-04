@@ -2,6 +2,7 @@ package ar.com.sourcesistemas.cajeros;
 
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabaseCorruptException;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -12,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,8 +33,12 @@ import com.facebook.ProfileTracker;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
+import org.w3c.dom.Text;
+
+import java.sql.SQLDataException;
 import java.util.List;
 
+import ar.com.sourcesistemas.database.Constants;
 import ar.com.sourcesistemas.database.DatabaseHandler;
 import ar.com.sourcesistemas.entities.User;
 
@@ -42,6 +48,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 {
 
     //region "variables"
+
+    private static final String TAG = MainActivity.class.getSimpleName();
+    final public String TAG_DATABASE = "Database SQL";
+
     //Facebook
     private CallbackManager callbackManager;
     public TextView facebook_profile ;
@@ -54,8 +64,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     //Database connection
     private DatabaseHandler databaseHandler;
 
-    private EditText name;
-    private EditText last_name;
+    private TextView name;
+    private TextView last_name;
 
 
     //endregion
@@ -71,9 +81,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         Button save_button = (Button) findViewById(R.id.save);
         Button load_button = (Button) findViewById(R.id.load);
+        Button clear_button = (Button) findViewById(R.id.clear_fields);
 
-        name = (EditText) findViewById(R.id.name);
-        last_name = (EditText) findViewById(R.id.last_name);
+        name = (TextView) findViewById(R.id.name);
+        last_name = (TextView) findViewById(R.id.last_name);
         facebook_profile = (TextView) findViewById(R.id.facebook_name);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -88,10 +99,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onClick(View v)
             {
-
-                User user = new User(name.getText().toString(), last_name.getText().toString());
-
-                databaseHandler.insertUser(user);
+                Profile profile = Profile.getCurrentProfile();
+                if(profile != null)
+                {
+                    User user = new User(profile.getFirstName() + " " + profile.getMiddleName(), profile.getLastName());
+                    try{
+                        databaseHandler.insertUser(user);
+                    }
+                    catch (SQLiteDatabaseCorruptException sql){
+                        sql.getStackTrace();
+                        Log.e(TAG_DATABASE, "No se pudo conectar a la base de datos");
+                    }
+                    displayMessage("El usuario fue guardado");
+                }else{
+                    displayMessage("Por favor, loguea antes de guardar");
+                }
 
             }
         });
@@ -106,12 +128,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 name.setText(user.getName());
                 last_name.setText(user.getLast_name());
 
-                //Te deslogueas y pedis el load para ver el facebook
-//                facebook_profile.setText(user.getFacebook());
+                displayMessage("Welcome back!");
             }
-
-
         });
+
+        clear_button.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                name.setText("");
+                last_name.setText("");
+            }
+        });
+
+
 
         //endregion
 
@@ -136,7 +167,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             //User Log in on new account. Creo que también aplica cuando se loguea por primera vez
             protected void onCurrentProfileChanged(Profile oldProfile, Profile newProfile) {
-                displayMessage(newProfile);
+//                displayMessage(newProfile);
             }
         };
 
@@ -202,7 +233,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         public void onSuccess(LoginResult loginResult) {
             AccessToken accessToken = loginResult.getAccessToken();
             Profile profile = Profile.getCurrentProfile();
-            displayMessage(profile);
+            showProfile(profile);
         }
 
         @Override
@@ -216,6 +247,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         }
     };
+
+    private void showProfile(Profile profile)
+    {
+        String firstName = profile.getFirstName() + " " + profile.getMiddleName();
+        String lastName = profile.getLastName();
+
+        Log.i("Facebook", firstName);
+        Log.i("Facebook", lastName);
+        name.setText(firstName);
+        last_name.setText(lastName);
+    }
 
     private void displayMessage(Profile profile)
     {
@@ -310,8 +352,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void onResume()
     {
         super.onResume();
-        Profile profile = Profile.getCurrentProfile();
-        displayMessage(profile);
     }
 
 

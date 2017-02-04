@@ -45,7 +45,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         String CREATE_USER_TABLE=" CREATE TABLE  `user` ( `iduser` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,   " +
                 "`name` VARCHAR(45) NULL, " +
-                "`last_name` VARCHAR(45) NULL,";
+                "`last_name` VARCHAR(45) NULL);";
         String CREATE_ATM_TABLE=" CREATE TABLE  `ATM` (`idATM` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE," +
                 "`address` VARCHAR(45) NULL," +
                 "`lat` VARCHAR(100) NULL," +
@@ -76,6 +76,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
     }
 
+
+    public void restartDatabase(Context context)
+    {
+        closeDatabase();
+        context.deleteDatabase(DATABASE_NAME);
+    }
 
 
     public List<User>  getUsers(){
