@@ -18,7 +18,7 @@ public class Connector {
 
     public Connector(Context context) throws Exception {
 
-        databaseHandler = new DatabaseHandler(context,null,null,1);
+        databaseHandler = new DatabaseHandler(context);
 
 
     }

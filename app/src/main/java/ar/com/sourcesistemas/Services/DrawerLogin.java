@@ -1,4 +1,4 @@
-package ar.com.sourcesistemas.cajeros;
+package ar.com.sourcesistemas.Services;
 
 import android.support.design.widget.NavigationView;
 import android.util.Log;
@@ -7,6 +7,9 @@ import android.widget.TextView;
 
 import com.facebook.Profile;
 import com.facebook.login.widget.ProfilePictureView;
+
+import ar.com.sourcesistemas.Activities.MainActivity;
+import ar.com.sourcesistemas.Activities.R;
 
 
 /**

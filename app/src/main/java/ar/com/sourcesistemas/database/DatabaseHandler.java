@@ -27,11 +27,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private SQLiteDatabase db;
 
 
-    public DatabaseHandler(Context context, String name, SQLiteDatabase.CursorFactory factory, int version)
+    public DatabaseHandler(Context context)
     {
-        super(context, DATABASE_NAME, factory, 5);
-
-
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
         this.db = this.getWritableDatabase();
 
     }
