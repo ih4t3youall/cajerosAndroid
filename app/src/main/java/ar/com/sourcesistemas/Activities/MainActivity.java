@@ -36,6 +36,7 @@ import com.facebook.login.widget.LoginButton;
 import java.util.List;
 
 import ar.com.sourcesistemas.Fragments.DatabaseInteraction;
+import ar.com.sourcesistemas.Fragments.GmapsIntegration;
 import ar.com.sourcesistemas.Fragments.Login;
 import ar.com.sourcesistemas.Services.DrawerLogin;
 import ar.com.sourcesistemas.database.DatabaseHandler;
@@ -60,14 +61,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ProfileTracker profileTracker;
 
 
-
-    //Database connection
-    private DatabaseHandler databaseHandler;
-
-    private TextView name;
-    private TextView last_name;
-
-
     //NavViewer
     NavigationView navViewContext;
 
@@ -88,48 +81,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //            fragmentTransaction.commit();
 //        }
 
-
-
-        //region initialize
-
-
-
-        //endregion
-
-
-
-//        load_button.setOnClickListener(new View.OnClickListener()
-//        {
-//            @Override
-//            public void onClick(View v)
-//            {
-//                List<User> users = databaseHandler.getUsers();
-//                User user = users.get(0);
-//                name.setText(user.getName());
-//                last_name.setText(user.getLast_name());
-//
-//                displayMessage("Welcome back!");
-//            }
-//        });
-
-//        clear_button.setOnClickListener(new View.OnClickListener()
-//        {
-//            @Override
-//            public void onClick(View v)
-//            {
-//                name.setText("");
-//                last_name.setText("");
-//            }
-//        });
-        //endregion
-
         //region "NavigationDrawer"
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
 
-        //region "message"
+            //region "message"
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener()
         {
@@ -140,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         .setAction("Action", null).show();
             }
         });
-//endregion
+            //endregion
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -150,8 +108,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         navViewContext = (NavigationView) findViewById(R.id.nav_view);
         navViewContext.setNavigationItemSelectedListener(this);
-
-
         //endregion
 
 
@@ -170,7 +126,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     Profile profile = Profile.getCurrentProfile();
                     draw.setDrawer(profile);
                 }
-
             }
         };
 
@@ -180,6 +135,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             //User Log in on new account. Creo que también aplica cuando se loguea por primera vez
             protected void onCurrentProfileChanged(Profile oldProfile, Profile newProfile)
             {
+                //TODO Create welcome new user
 //                displayMessage(newProfile);
             }
         };
@@ -304,11 +260,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (id == R.id.nav_camera) {
 
-            Fragment fragment = new DatabaseInteraction();
-            FragmentManager fragmentTransaction;
-            
+            android.support.v4.app.Fragment login = new Login();
+            android.support.v4.app.FragmentManager fn = getSupportFragmentManager();
+            android.support.v4.app.FragmentTransaction fragmentTransaction = fn.beginTransaction();
+            fragmentTransaction.replace(R.id.fragment_container, login);
+            fragmentTransaction.commit();
 
         } else if (id == R.id.nav_gallery) {
+
+            Fragment gmaps = new GmapsIntegration();
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.replace(R.id.fragment_container, gmaps, gmaps.getTag());
+            ft.commit();
+
 
         } else if (id == R.id.nav_slideshow) {
 

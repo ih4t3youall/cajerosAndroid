@@ -6,7 +6,7 @@
               android:orientation="vertical"
               tools:context="ar.com.sourcesistemas.Fragments.Login"
               android:paddingLeft="70dp"
-              android:paddingTop="80dp"
+              android:paddingTop="120dp"
     >
 
 
