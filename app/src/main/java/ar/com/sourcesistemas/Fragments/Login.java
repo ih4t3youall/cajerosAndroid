@@ -2,11 +2,12 @@ package ar.com.sourcesistemas.Fragments;
 
 
 
+import android.app.Fragment;
 import android.database.sqlite.SQLiteDatabaseCorruptException;
 import android.os.Bundle;
 
 
-import android.support.v4.app.Fragment;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,9 +21,6 @@ import ar.com.sourcesistemas.Activities.R;
 import ar.com.sourcesistemas.database.DatabaseHandler;
 import ar.com.sourcesistemas.entities.User;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class Login extends Fragment
 {
 
@@ -49,7 +47,6 @@ public class Login extends Fragment
     {
 
 
-        databaseHandler = new DatabaseHandler(getContext());
 
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_login, container, false);
@@ -58,6 +55,9 @@ public class Login extends Fragment
 
     public void onViewCreated(View view, Bundle savedInstanceState)
     {
+        databaseHandler = new DatabaseHandler(getActivity());
+
+
         show_message = (TextView) getView().findViewById(R.id.login_message);
 
         Button save_button = (Button) getView().findViewById(R.id.save);

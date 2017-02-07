@@ -260,9 +260,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (id == R.id.nav_camera) {
 
-            android.support.v4.app.Fragment login = new Login();
-            android.support.v4.app.FragmentManager fn = getSupportFragmentManager();
-            android.support.v4.app.FragmentTransaction fragmentTransaction = fn.beginTransaction();
+            Fragment login = new Login();
+            FragmentManager fn = getFragmentManager();
+            FragmentTransaction fragmentTransaction = fn.beginTransaction();
             fragmentTransaction.replace(R.id.fragment_container, login);
             fragmentTransaction.commit();
 
